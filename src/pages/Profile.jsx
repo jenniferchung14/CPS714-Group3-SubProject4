@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const profile1 = {
     profilePic: "https://media.istockphoto.com/id/1279504799/photo/businesswomans-portrait.jpg?s=612x612&w=0&k=20&c=I-54ajKgmxkY8s5-myHZDv_pcSCveaoopf1DH3arv0k=",
@@ -23,8 +24,12 @@ function Profile({profilePic, firstName, lastName, dateOfBirth, email, phone, ge
         </div>
 
         <div className="button-section">
-            <button className="button-styling">Reset Password</button>
-            <button className="button-styling">Edit Profile</button>
+            {/* <Link to="/resetPassword">
+                <button className="button-styling">Reset Password</button>
+            </Link> */}
+            <Link to="/editProfile">
+                 <button className="button-styling">Edit Profile</button>
+            </Link>
         </div>
 
         <div className='main-section'>

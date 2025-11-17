@@ -5,9 +5,11 @@ import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
 
 import Profile from './Profile.jsx';
+import EditProfile from './EditProfile.jsx';
 
 import '../styles/App.css'
 import '../styles/Profile.css'
+import '../styles/EditProfile.css'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -39,9 +41,13 @@ function App() {
               Click on the Vite and React logos to learn more
             </p> */}
             <h1>Put the main library page here</h1>
+            <Link to="/profile">
+              <button><span>Profile</span></button>
+            </Link>
             </>
           } />
           <Route path="/profile" element={<Profile />} />   
+          <Route path="/editProfile" element={<EditProfile />} />  
           </Routes>
       </div>
     </BrowserRouter>
