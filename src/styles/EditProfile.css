@@ -1,0 +1,132 @@
+.edit-profile-page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.edit-profile-page .header-section {
+    display: flex;
+    text-align: left;
+    padding-left: 36px;
+}
+
+.edit-profile-page .button-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 36px;
+    margin-top: -16px;
+    padding-right: 36px;
+}
+
+.edit-profile-page .button-section .button-styling {
+    background-color: #213547;
+    color: white;
+    border-radius: 18px;
+}
+
+.edit-profile-page .main-section {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    margin-top: 48px;
+    /* make sure to change below */
+    padding: 36px; 
+}
+
+.edit-profile-page .content-section {
+    display: flex;
+    border-radius: 18px;
+    background-color: white;
+}
+
+.edit-profile-page .profile-overview {
+    display: flex;
+    padding: 36px;
+}
+
+.edit-profile-page .profile-overview p{
+    margin: 4px;
+}
+
+.edit-profile-page .profile-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-profile-page .profile-pic {
+    display: flex;
+    border-radius: 50%;
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+}
+
+.edit-profile-page .personal-info {
+    display: flex;
+    flex-direction: column;
+    padding: 36px;
+    width: 1800px;
+}
+
+.edit-profile-page .details {
+    display: flex;
+    column-gap: 480px;
+    row-gap: 36px;
+    flex-wrap: wrap;
+}
+
+.edit-profile-page .info-box {
+    width: 212px;
+}
+
+.edit-profile-page .address-info {
+    display: flex;
+    flex-direction: column;
+    padding: 36px;
+    width: 1600px;
+}
+
+
+/* CHANGE BELOW THIS IS THE INPUT STYLING BOX  */
+
+.info-box input,
+.info-box select {
+  width: 100%;
+  padding: 10px 12px;
+
+  border: 1.5px solid #d3d3d3;
+  border-radius: 6px;
+
+  font-size: 15px;
+  color: #333;
+
+  background-color: #fafafa;
+  transition: 0.25s ease;
+}
+
+/* Focus effect */
+.info-box input:focus,
+.info-box select:focus {
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+  background-color: #fff;
+  outline: none;
+}
+
+/* Hover effect */
+.info-box input:hover,
+.info-box select:hover {
+  border-color: #b5b5b5;
+}
+
+/* Error text */
+.error {
+  font-size: 13px;
+  color: #d9534f;
+  margin-top: 4px;
+}
+
+/* File upload input (optional) */
+input[type="file"] {
+  margin-top: 10px;
+}

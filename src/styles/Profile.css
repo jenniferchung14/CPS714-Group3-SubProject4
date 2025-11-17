@@ -58,7 +58,6 @@
 .profile-page .profile-pic {
     display: flex;
     border-radius: 50%;
-    background-color: hotpink;
     width: 180px;
     height: 180px;
     object-fit: cover;
