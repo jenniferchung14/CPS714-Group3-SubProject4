@@ -1,3 +1,31 @@
+.library-page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.library-page .main-section {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    margin-top: 48px;
+    /* make sure to change below */
+    padding: 36px; 
+}
+
+.library-page .content-section {
+    display: flex;
+    border-radius: 18px;
+    background-color: white;
+}
+
+.library-page .borrowed-books-section {
+    display: flex;
+    flex-direction: column;
+    padding: 36px;
+    width: 1600px;
+}
+
 .library-table {
   width: 100%;
   border-collapse: collapse;

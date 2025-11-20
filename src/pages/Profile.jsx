@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import LibraryTable from "../components/LibraryTable";
+import LibraryTable from "./components/LibraryTable";
 
 const profile1 = {
   profilePic:
@@ -123,12 +123,6 @@ function Profile({
                 <p>{profile1.province}</p>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="content-section">
-          <div className="profile-overview">
-            <h3>My Borrowed Books</h3>
-            <LibraryTable />
           </div>
         </div>
       </div>

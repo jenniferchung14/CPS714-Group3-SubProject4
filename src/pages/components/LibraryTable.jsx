@@ -1,5 +1,4 @@
 import React from "react";
-import "../styles/LibraryTable.css";
 
 // I'm assuming the statuses will be: "BORROWED" | "OVERDUE" | "RETURNED"
 const borrowedBooks = [
