@@ -13,6 +13,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
+
 function writeBookData(bookId, imageUrl, bookTitle, author, genre, dueDate, fines) {
   const db = getDatabase();
   const reference = ref(db, 'bookId/' + bookId);
