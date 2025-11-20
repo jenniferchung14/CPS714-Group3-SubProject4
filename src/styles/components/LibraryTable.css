@@ -1,0 +1,113 @@
+.library-page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.library-page .main-section {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    margin-top: 48px;
+    /* make sure to change below */
+    padding: 36px; 
+}
+
+.library-page .content-section {
+    display: flex;
+    border-radius: 18px;
+    background-color: white;
+}
+
+.library-page .borrowed-books-section {
+    display: flex;
+    flex-direction: column;
+    padding: 36px;
+    width: 1600px;
+}
+
+.library-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.library-table th,
+.library-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.title-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.book-cover {
+  width: 40px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.genre-tag {
+  background: #e8f3ff;
+  padding: 4px 8px;
+  border-radius: 8px;
+  margin-right: 4px;
+  font-size: 12px;
+}
+
+.btn {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.btn-renew {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.btn-fine {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.btn-returned {
+  background: #e5e7eb;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.btn-disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.library-summary {
+  margin-top: 16px;
+}
+
+.summary-info ul {
+  padding-left: 18px;
+  font-size: 13px;
+}
+
+.summary-total {
+  font-size: 14px;
+}
+
+.btn-pay-all {
+  margin-top: 16px;
+  background: #2563eb;
+  color: white;
+}
+
+.btn-pay-all:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
