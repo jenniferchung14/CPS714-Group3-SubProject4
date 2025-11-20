@@ -53,24 +53,6 @@ function Profile({
       </div>
 
       <div className="main-section">
-        <div className="content-section">
-          <div className="profile-overview">
-            <div>
-              <img
-                className="profile-pic"
-                src="https://media.istockphoto.com/id/1279504799/photo/businesswomans-portrait.jpg?s=612x612&w=0&k=20&c=I-54ajKgmxkY8s5-myHZDv_pcSCveaoopf1DH3arv0k="
-                alt="Profile"
-              />
-            </div>
-            <div className="profile-details">
-              <h2>{profile.firstName + " " + profile.lastName}</h2>
-              <p>{profile.email}</p>
-              <p>{profile.phone}</p>
-              <p>{profile.city + " " + profile.province}</p>
-            </div>
-          </div>
-        </div>
-
         <div className="main-section">
           <div className="content-section">
             <div className="profile-overview">
@@ -151,34 +133,6 @@ function Profile({
                   <p>{profile.province}</p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="content-section">
-        <div className="address-info">
-          <h3>Address</h3>
-          <div className="details">
-            <div className="info-box">
-              <p>Street Address</p>
-              <p>{profile.streetAddress}</p>
-            </div>
-            <div className="info-box">
-              <p>Apt Number</p>
-              <p>{profile.aptNumber}</p>
-            </div>
-            <div className="info-box">
-              <p>Postal Code</p>
-              <p>{profile.postal}</p>
-            </div>
-            <div className="info-box">
-              <p>City</p>
-              <p>{profile.city}</p>
-            </div>
-            <div className="info-box">
-              <p>Province</p>
-              <p>{profile.province}</p>
             </div>
           </div>
         </div>
