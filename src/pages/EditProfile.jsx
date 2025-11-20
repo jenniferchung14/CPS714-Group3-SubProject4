@@ -68,31 +68,51 @@ function EditProfile() {
 
   return (
     <div className="edit-profile-page">
-      <div className="header-section">
+      <div className="profile-header">
         <h1>Edit Profile</h1>
-      </div>
-
-      <div className="button-section">
+        <div className="header-buttons">
         <Link to={`/profile/${uid}`}>
           <button className="button-styling">Cancel</button>
         </Link>
-        <button className="button-styling" onClick={handleSave}>Save</button>
+          <button className="button-styling" onClick={handleSave}>
+            Save
+          </button>
+        </div>
       </div>
 
       <div className="main-section">
 
         <div className="content-section">
           <div className="profile-overview">
-            <div>
+            <div className="profile-pic-container">
               <img 
                 className="profile-pic"
                 src={profile.profilePic}
                 alt="Profile"
               />
+              <button
+                className="camera-button"
+                onClick={() => document.getElementById("file-input").click()}
+                type="button"
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+              </button>
               <input
+                id="file-input"
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
+                style={{ display: "none" }}
               />
             </div>
 

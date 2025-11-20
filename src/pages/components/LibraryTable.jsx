@@ -22,7 +22,8 @@ const LibraryTable = () => {
 
           let status = loan.status || "BORROWED";
           if (!loan.status) {
-            if (due && due < today && Number(loan.fines || 0) > 0) status = "OVERDUE";
+            if (due && due < today && Number(loan.fines || 0) > 0)
+              status = "OVERDUE";
           }
 
           return {
@@ -30,11 +31,13 @@ const LibraryTable = () => {
             title: loan.title,
             cover: loan.bookCover,
             author: loan.author,
-            genre: Array.isArray(loan.genre) ? loan.genre : [loan.genre].filter(Boolean),
+            genre: Array.isArray(loan.genre)
+              ? loan.genre
+              : [loan.genre].filter(Boolean),
             dueDate: loan.dueDate,
             fine: Number(loan.fines || 0),
             status,
-            hasHold: Boolean(loan.hasHold)
+            hasHold: Boolean(loan.hasHold),
           };
         });
 
@@ -69,11 +72,7 @@ const LibraryTable = () => {
     if (book.status === "BORROWED" && book.hasHold) {
       const ttId = `tt-${book.id}`;
       return (
-        <span
-          className="tooltip-wrapper"
-          tabIndex={0}
-          aria-describedby={ttId}
-        >
+        <span className="tooltip-wrapper" tabIndex={0} aria-describedby={ttId}>
           <button className="btn btn-disabled" disabled aria-hidden="true">
             Renew
           </button>
@@ -118,7 +117,11 @@ const LibraryTable = () => {
               <tr key={book.id}>
                 <td>
                   <div className="title-wrapper">
-                    <img src={book.cover} alt={book.title} className="book-cover" />
+                    <img
+                      src={book.cover}
+                      alt={book.title}
+                      className="book-cover"
+                    />
                     <span>{book.title}</span>
                   </div>
                 </td>

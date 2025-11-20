@@ -1,122 +1,91 @@
 .edit-profile-page {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #f5f7fa;
+  min-height: 100vh;
 }
 
-.edit-profile-page .header-section {
-    display: flex;
-    text-align: left;
-    padding-left: 36px;
+.edit-profile-page input[type="file"] {
+  display: none;
 }
 
-.edit-profile-page .button-section {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 36px;
-    margin-top: -16px;
-    padding-right: 36px;
+.info-box input:focus,
+.info-box select:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+  background-color: #fff;
 }
 
-.edit-profile-page .button-section .button-styling {
-    background-color: #213547;
-    color: white;
-    border-radius: 18px;
+.edit-profile-page .profile-pic-container {
+  position: relative;
+  width: fit-content;
 }
 
-.edit-profile-page .main-section {
-    display: flex;
-    flex-direction: column;
-    gap: 36px;
-    margin-top: 48px;
-    /* make sure to change below */
-    padding: 36px; 
+.edit-profile-page .camera-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #213547;
+  border: 3px solid white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  color: white;
+  padding: 0;
 }
 
-.edit-profile-page .content-section {
-    display: flex;
-    border-radius: 18px;
-    background-color: white;
+.edit-profile-page .camera-button:hover {
+  background-color: #1a2634;
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-
-.edit-profile-page .profile-overview {
-    display: flex;
-    padding: 36px;
-}
-
-.edit-profile-page .profile-overview p{
-    margin: 4px;
-}
-
-.edit-profile-page .profile-details {
-    display: flex;
-    flex-direction: column;
-}
-
-.edit-profile-page .profile-pic {
-    display: flex;
-    border-radius: 50%;
-    width: 180px;
-    height: 180px;
-    object-fit: cover;
-}
-
-.edit-profile-page .personal-info {
-    display: flex;
-    flex-direction: column;
-    padding: 36px;
-    width: 1800px;
-}
-
-.edit-profile-page .details {
-    display: flex;
-    column-gap: 480px;
-    row-gap: 36px;
-    flex-wrap: wrap;
-}
-
-.edit-profile-page .info-box {
-    width: 212px;
-}
-
-.edit-profile-page .address-info {
-    display: flex;
-    flex-direction: column;
-    padding: 36px;
-    width: 1600px;
-}
-
-
-/* CHANGE BELOW THIS IS THE INPUT STYLING BOX  */
 
 .info-box input,
 .info-box select {
   width: 100%;
-  padding: 10px 12px;
-
-  border: 1.5px solid #d3d3d3;
-  border-radius: 6px;
-
+  padding: 10px 14px;
+  height: 44px;
+  border: 1px solid #e6e8eb;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #1a202c;
   font-size: 15px;
-  color: #333;
-
-  background-color: #fafafa;
-  transition: 0.25s ease;
+  line-height: 1.2;
+  box-sizing: border-box;
+  transition: border-color 180ms ease, box-shadow 180ms ease,
+    background-color 180ms ease;
+  font-family: inherit;
 }
 
-/* Focus effect */
-.info-box input:focus,
-.info-box select:focus {
-  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
-  background-color: #fff;
-  outline: none;
+.info-box select {
+  padding-right: 40px;
 }
 
-/* Hover effect */
 .info-box input:hover,
 .info-box select:hover {
-  border-color: #b5b5b5;
+  border-color: #d6d8db;
+  background-color: #ffffff;
+}
+
+.info-box input:focus,
+.info-box select:focus {
+  border-color: #213547;
+  box-shadow: 0 6px 18px rgba(33, 53, 71, 0.06);
+  outline: none;
+  background-color: #ffffff;
+}
+
+.info-box input[type="date"],
+.info-box input[type="email"],
+.info-box input[type="tel"] {
+  height: 44px;
 }
 
 /* Error text */
