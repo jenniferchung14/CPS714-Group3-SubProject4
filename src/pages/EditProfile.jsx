@@ -1,30 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { getUserProfile, updateUserProfile } from "../services/firebase"; 
 
 const provinces = [
   "AB", "BC", "MB", "NB", "NL", "NS", "NT", "NU",
   "ON", "PE", "QC", "SK", "YT"
 ];
 
-const initialProfile = {
-  profilePic: "https://media.istockphoto.com/id/1279504799/photo/businesswomans-portrait.jpg?s=612x612&w=0&k=20&c=I-54ajKgmxkY8s5-myHZDv_pcSCveaoopf1DH3arv0k=",
-  firstName: "Jane",
-  lastName: "Doe",
-  dateOfBirth: "1990-12-10",
-  email: "jane.doe@gmail.com",
-  phone: "123-456-7890",
-  gender: "Female",
-  streetAddress: "123 Town Street",
-  aptNumber: "",
-  postal: "A1B 2C3",
-  city: "Toronto",
-  province: "ON"
-};
-
 function EditProfile() {
-  const [profile, setProfile] = useState(initialProfile);
+  const [profile, setProfile] = useState(null);
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  // Load profile from Firestore
+  useEffect(() => {
+    async function load() {
+      // const uid = auth.currentUser?.uid;
+      // if (!uid) return;
+
+      // uid hardcoded for testing purposes
+      const uid = "u_jane";
+
+      const data = await getUserProfile(uid);
+      setProfile(data);
+    }
+    load();
+  }, []);
+
+  // While loading
+  if (!profile) return <p>Loading profile...</p>;
 
   // Validators
   const validateEmail = (email) =>
@@ -49,8 +53,8 @@ function EditProfile() {
     setProfile({ ...profile, profilePic: url });
   };
 
-  // SAVE (no database yet)
-  const handleSave = () => {
+  // SAVE
+  const handleSave = async () => {
     const newErrors = {};
 
     if (!validateEmail(profile.email)) newErrors.email = "Invalid email.";
@@ -58,11 +62,17 @@ function EditProfile() {
     if (!validatePostal(profile.postal)) newErrors.postal = "Invalid postal code.";
 
     setErrors(newErrors);
-
     if (Object.keys(newErrors).length > 0) return;
 
+    // UID hardcoded for now (same one you used earlier)
+    const uid = "u_jane";
+
+    // Save to Firestore
+    await updateUserProfile(uid, profile);
+
     alert("Profile saved successfully!");
-    navigate("/profile", { state: { updatedProfile: profile } });
+
+    navigate("/profile");
   };
 
   return (
