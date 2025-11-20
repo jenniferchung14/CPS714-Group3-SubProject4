@@ -6,6 +6,7 @@ import viteLogo from '/vite.svg'
 
 import Profile from './Profile.jsx';
 import EditProfile from './EditProfile.jsx';
+import Navbar from './NavBar.jsx';
 
 import '../styles/App.css'
 import '../styles/Profile.css'
@@ -16,6 +17,8 @@ function App() {
 
   return (
     <BrowserRouter>
+      <Navbar />
+
       <div>
         <Routes>
           <Route path="/" element={

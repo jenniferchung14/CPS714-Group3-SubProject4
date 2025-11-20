@@ -1,0 +1,63 @@
+/* --- NAVBAR BAR --- */
+.nav {
+    height: 60px;
+    background: transparent;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+  }
+  
+  /* --- HAMBURGER ICON --- */
+  .hamburger {
+    width: 30px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 20px;
+  }
+  
+  .hamburger span {
+    display: block;
+    background: gray;
+    height: 3px;
+    border-radius: 3px;
+  }
+  
+  /* --- SLIDE-IN MENU --- */
+  .menu {
+    position: fixed;
+    top: 0;
+    right: -250px; /* hidden by default */
+    width: 250px;
+    height: 100vh;
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px;
+    transition: right 0.3s ease;
+  }
+  
+  .menu.open {
+    right: 0;
+  }
+  
+  .menu a {
+    padding: 15px 20px;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .menu a:hover {
+    background: #aea8a8;
+  }
+  
+  /* --- OVERLAY --- */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    /* background: rgba(0, 0, 0, 0.4); */
+  }
