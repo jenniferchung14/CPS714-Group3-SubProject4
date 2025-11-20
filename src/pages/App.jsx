@@ -47,14 +47,15 @@ function App() {
             <p className="read-the-docs">
               Click on the Vite and React logos to learn more
             </p> */}
-                <h1>Put the main library page here</h1>
-                <Link to="/profile">
-                  <button>
-                    <span>Profile</span>
-                  </button>
-                </Link>
+
                 <div className="library-page">
                   <div className="main-section">
+                    <h1>Put the main library page here</h1>
+                    <Link to="/profile">
+                      <button className="btn-profile">
+                        <span>Profile</span>
+                      </button>
+                    </Link>
                     <div className="content-section">
                       <div className="borrowed-books-section">
                         <h3>My Borrowed Books</h3>
