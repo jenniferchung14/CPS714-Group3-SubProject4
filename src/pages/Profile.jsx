@@ -63,10 +63,10 @@ function Profile({
               />
             </div>
             <div className="profile-details">
-              <h2>{profile1.firstName + " " + profile1.lastName}</h2>
-              <p>{profile1.email}</p>
-              <p>{profile1.phone}</p>
-              <p>{profile1.city + " " + profile1.province}</p>
+              <h2>{profile.firstName + " " + profile.lastName}</h2>
+              <p>{profile.email}</p>
+              <p>{profile.phone}</p>
+              <p>{profile.city + " " + profile.province}</p>
             </div>
           </div>
         </div>
@@ -162,23 +162,23 @@ function Profile({
           <div className="details">
             <div className="info-box">
               <p>Street Address</p>
-              <p>{profile1.streetAddress}</p>
+              <p>{profile.streetAddress}</p>
             </div>
             <div className="info-box">
               <p>Apt Number</p>
-              <p>{profile1.aptNumber}</p>
+              <p>{profile.aptNumber}</p>
             </div>
             <div className="info-box">
               <p>Postal Code</p>
-              <p>{profile1.postal}</p>
+              <p>{profile.postal}</p>
             </div>
             <div className="info-box">
               <p>City</p>
-              <p>{profile1.city}</p>
+              <p>{profile.city}</p>
             </div>
             <div className="info-box">
               <p>Province</p>
-              <p>{profile1.province}</p>
+              <p>{profile.province}</p>
             </div>
           </div>
         </div>
