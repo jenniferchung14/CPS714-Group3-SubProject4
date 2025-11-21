@@ -22,18 +22,14 @@ function Profile() {
 
     return (
     <div className="profile-page">
-      <div className="header-section">
+      <div className="profile-header">
         <h1>My Profile</h1>
-      </div>
-
-      <div className="button-section">
         <Link to={`/editProfile/${uid}`}>
             <button className="button-styling">Edit Profile</button>
         </Link>
       </div>
 
       <div className="main-section">
-        <div className="main-section">
           <div className="content-section">
             <div className="profile-overview">
               <div>
@@ -117,7 +113,6 @@ function Profile() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 
