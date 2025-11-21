@@ -1,54 +1,34 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import LibraryTable from "./components/LibraryTable";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
-import { useEffect, useState } from "react";
 import { auth, getUserProfile } from "../services/firebase.js";
 
-function Profile({
-  profilePic,
-  firstName,
-  lastName,
-  dateOfBirth,
-  email,
-  phone,
-  gender,
-  streetAddress,
-  aptNumber,
-  postal,
-  city,
-  province,
-}) {
-  const [profile, setProfile] = useState(null);
+function Profile() {
 
-  useEffect(() => {
-    async function load() {
-      // const uid = auth.currentUser?.uid;
-      // if (!uid) return;
+    const { uid } = useParams();   // <-- get uid from URL
+    const [profile, setProfile] = useState(null);
 
-      // uid hardcoded for testing purposes
-      const uid = "u_jane";
+    useEffect(() => {
+        async function load() {
+        if (!uid) return;
 
-      const data = await getUserProfile(uid);
-      setProfile(data);
-    }
-    load();
-  }, []);
+        const data = await getUserProfile(uid);
+        setProfile(data);
+        }
+        load();
+    }, [uid]);
 
-  if (!profile) return <p>Loading Profile...</p>;
+    if (!profile) return <p>Loading Profile...</p>;
 
-  return (
+    return (
     <div className="profile-page">
       <div className="header-section">
         <h1>My Profile</h1>
       </div>
 
       <div className="button-section">
-        {/* <Link to="/resetPassword">
-                <button className="button-styling">Reset Password</button>
-            </Link> */}
-        <Link to="/editProfile">
-          <button className="button-styling">Edit Profile</button>
+        <Link to={`/editProfile/${uid}`}>
+            <button className="button-styling">Edit Profile</button>
         </Link>
       </div>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getUserProfile, updateUserProfile } from "../services/firebase"; 
 
 const provinces = [
@@ -10,22 +10,17 @@ const provinces = [
 function EditProfile() {
   const [profile, setProfile] = useState(null);
   const [errors, setErrors] = useState({});
+  const { uid } = useParams();     // <-- dynamic UID
   const navigate = useNavigate();
 
-  // Load profile from Firestore
   useEffect(() => {
     async function load() {
-      // const uid = auth.currentUser?.uid;
-      // if (!uid) return;
-
-      // uid hardcoded for testing purposes
-      const uid = "u_jane";
-
+      if (!uid) return;
       const data = await getUserProfile(uid);
       setProfile(data);
     }
     load();
-  }, []);
+  }, [uid]);
 
   // While loading
   if (!profile) return <p>Loading profile...</p>;
@@ -64,15 +59,11 @@ function EditProfile() {
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
 
-    // UID hardcoded for now (same one you used earlier)
-    const uid = "u_jane";
-
-    // Save to Firestore
     await updateUserProfile(uid, profile);
 
-    alert("Profile saved successfully!");
+    alert("Profile updated!");
 
-    navigate("/profile");
+    navigate(`/profile/${uid}`);  // <-- Redirect back to THIS user's profile
   };
 
   return (
@@ -82,7 +73,7 @@ function EditProfile() {
       </div>
 
       <div className="button-section">
-        <Link to="/profile">
+        <Link to={`/profile/${uid}`}>
           <button className="button-styling">Cancel</button>
         </Link>
         <button className="button-styling" onClick={handleSave}>Save</button>
