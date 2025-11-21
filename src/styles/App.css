@@ -40,3 +40,47 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Tooltip helper: ensure wrapper receives hover while disabled buttons don't block it */
+.tooltip-wrapper { display: inline-block; }
+.tooltip-wrapper > .btn.btn-disabled { pointer-events: none; }
+
+.tooltip-wrapper { position: relative; }
+.tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  transition: opacity 120ms ease-in-out;
+  pointer-events: none;
+  z-index: 20;
+}
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid rgba(0,0,0,0.85);
+}
+.tooltip-wrapper:hover .tooltip-text,
+.tooltip-wrapper:focus-within .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Make the disabled "Returned" button do nothing on hover (keep default cursor)
+   and avoid showing the not-allowed cursor. */
+.btn.btn-returned {
+  cursor: default;
+}

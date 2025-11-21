@@ -1,56 +1,55 @@
-import React from "react";
-
-// I'm assuming the statuses will be: "BORROWED" | "OVERDUE" | "RETURNED"
-const borrowedBooks = [
-  {
-    id: 1,
-    title: "The Lovely Bones",
-    cover: "https://m.media-amazon.com/images/I/81ZE6HFYZoL.jpg",
-    author: "Alice Sebold",
-    genre: ["Mystery"],
-    dueDate: "2025-03-10",
-    fine: 4.5,
-    status: "OVERDUE",
-    hasHold: false, // has to pay fee bc overdue
-  },
-  {
-    id: 2,
-    title: "The Lovely Bones",
-    cover: "https://m.media-amazon.com/images/I/81ZE6HFYZoL.jpg",
-    author: "Alice Sebold",
-    genre: ["Mystery"],
-    dueDate: "2025-03-20",
-    fine: 0,
-    status: "BORROWED",
-    hasHold: true, // cannot renew
-  },
-  {
-    id: 3,
-    title: "The Lovely Bones",
-    cover: "https://m.media-amazon.com/images/I/81ZE6HFYZoL.jpg",
-    author: "Alice Sebold",
-    genre: ["Fiction"],
-    dueDate: "2025-03-21",
-    fine: 0,
-    status: "RETURNED",
-    hasHold: false, // returned book
-  },
-  {
-    id: 4,
-    title: "The Lovely Bones",
-    cover: "https://m.media-amazon.com/images/I/81ZE6HFYZoL.jpg",
-    author: "Alice Sebold",
-    genre: ["Fiction"],
-    dueDate: "2025-03-21",
-    fine: 0,
-    status: "BORROWED",
-    hasHold: false, // can renew, book currently borrowed
-  },
-];
+import React, { useEffect, useState } from "react";
+import { getUserLoans } from "../../services/firebase";
 
 const LibraryTable = () => {
+  const [books, setBooks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Load books from Firestore
+  useEffect(() => {
+    async function load() {
+      try {
+        // Use the active mock UID chosen at app startup so different dev sessions
+        // can show different users.
+        const { getActiveMockUid } = await import("../../services/firebase");
+        const uid = getActiveMockUid();
+        const loans = await getUserLoans(uid);
+
+        const mapped = loans.map((loan, index) => {
+          const today = new Date();
+          const rawDue = loan.dueDate;
+          const due = rawDue && rawDue !== "-" ? new Date(rawDue) : null;
+
+          let status = loan.status || "BORROWED";
+          if (!loan.status) {
+            if (due && due < today && Number(loan.fines || 0) > 0) status = "OVERDUE";
+          }
+
+          return {
+            id: loan.id || index,
+            title: loan.title,
+            cover: loan.bookCover,
+            author: loan.author,
+            genre: Array.isArray(loan.genre) ? loan.genre : [loan.genre].filter(Boolean),
+            dueDate: loan.dueDate,
+            fine: Number(loan.fines || 0),
+            status,
+            hasHold: Boolean(loan.hasHold)
+          };
+        });
+
+        setBooks(mapped);
+      } catch (e) {
+        console.error("Error loading loans:", e);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    load();
+  }, []);
+
   const actionButton = (book) => {
-    // scenario 1: book is returned, button is disabled, says "returned"
     if (book.status === "RETURNED") {
       return (
         <button className="btn btn-returned" disabled>
@@ -59,35 +58,39 @@ const LibraryTable = () => {
       );
     }
 
-    // scenario 2: book is overdue, so button says "pay fine" and is supposed to lead to pay fine page
     if (book.status === "OVERDUE" && book.fine > 0) {
       return <button className="btn btn-fine">Pay Fine</button>;
     }
 
-    // scenario 3: book is currently borrowed and can renew bc NO holds
     if (book.status === "BORROWED" && !book.hasHold) {
       return <button className="btn btn-renew">Renew</button>;
     }
 
-    // scenario 4: book is borrowed but has hold and cannot renew, button is disabled, hover for tooltip
     if (book.status === "BORROWED" && book.hasHold) {
+      const ttId = `tt-${book.id}`;
       return (
-        <button
-          className="btn btn-disabled"
-          disabled
-          title="Cannot renew — there is a hold on this book"
+        <span
+          className="tooltip-wrapper"
+          tabIndex={0}
+          aria-describedby={ttId}
         >
-          Renew
-        </button>
+          <button className="btn btn-disabled" disabled aria-hidden="true">
+            Renew
+          </button>
+          <span className="tooltip-text" role="tooltip" id={ttId}>
+            Cannot renew — there is a hold on this book
+          </span>
+        </span>
       );
     }
 
     return null;
   };
 
-  // for summary of fines:
-  const totalFine = borrowedBooks.reduce((sum, book) => sum + book.fine, 0);
-  const finedBooks = borrowedBooks.filter((book) => book.fine > 0);
+  if (loading) return <p>Loading your books...</p>;
+
+  const totalFine = books.reduce((sum, book) => sum + book.fine, 0);
+  const finedBooks = books.filter((book) => book.fine > 0);
 
   return (
     <div className="library-table-container">
@@ -104,41 +107,47 @@ const LibraryTable = () => {
         </thead>
 
         <tbody>
-          {borrowedBooks.map((book) => (
-            <tr key={book.id}>
-              <td>
-                <div className="title-wrapper">
-                  <img
-                    src={book.cover}
-                    alt={book.title}
-                    className="book-cover"
-                  />
-                  <span>{book.title}</span>
-                </div>
+          {books.length === 0 ? (
+            <tr>
+              <td colSpan={6} style={{ textAlign: "center" }}>
+                You have no checked-out books.
               </td>
-
-              <td>{book.author}</td>
-
-              <td>
-                {book.genre.map((g, i) => (
-                  <span key={i} className="genre-tag">
-                    {g}
-                  </span>
-                ))}
-              </td>
-
-              <td>{book.dueDate}</td>
-
-              <td>{book.fine > 0 ? `$${book.fine.toFixed(2)}` : "$0.00"}</td>
-
-              <td>{actionButton(book)}</td>
             </tr>
-          ))}
+          ) : (
+            books.map((book) => (
+              <tr key={book.id}>
+                <td>
+                  <div className="title-wrapper">
+                    <img src={book.cover} alt={book.title} className="book-cover" />
+                    <span>{book.title}</span>
+                  </div>
+                </td>
+
+                <td>{book.author}</td>
+
+                <td>
+                  {book.genre.map((g, i) => (
+                    <span key={i} className="genre-tag">
+                      {g}
+                    </span>
+                  ))}
+                </td>
+
+                <td>{book.dueDate}</td>
+
+                <td>{book.fine > 0 ? `$${book.fine.toFixed(2)}` : "$0.00"}</td>
+
+                <td>{actionButton(book)}</td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
+
       <div className="library-summary">
         <div className="summary-info">
           <h4>Fine Summary</h4>
+
           {totalFine === 0 ? (
             <p>You have no outstanding fines.</p>
           ) : (
@@ -160,7 +169,6 @@ const LibraryTable = () => {
         <button
           className="btn btn-pay-all"
           disabled={totalFine === 0}
-          // later: onClick={() => navigate("/pay-fines")} or call API
           onClick={() => alert("Pay all fines logic goes here")}
         >
           Pay All Fines

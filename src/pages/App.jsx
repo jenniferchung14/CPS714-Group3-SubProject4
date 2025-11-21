@@ -7,6 +7,7 @@ import viteLogo from "/vite.svg";
 import Profile from "./Profile.jsx";
 import EditProfile from "./EditProfile.jsx";
 import LibraryTable from "./components/LibraryTable.jsx";
+import { getActiveMockUid } from '../services/firebase.js';
 import Navbar from './components/NavBar.jsx';
 
 import "../styles/App.css";
@@ -16,6 +17,8 @@ import "../styles/components/NavBar.css";
 import "../styles/components/LibraryTable.css";
 
 function App() {
+
+  const activeUid = getActiveMockUid();
 
   return (
     <BrowserRouter>
@@ -29,7 +32,7 @@ function App() {
                 <div className="library-page">
                   <div className="main-section">
                     <h1>Put the main library page here</h1>
-                    <Link to="/profile">
+                    <Link to={`/profile/${activeUid}`}>
                       <button className="btn-profile">
                         <span>Profile</span>
                       </button>

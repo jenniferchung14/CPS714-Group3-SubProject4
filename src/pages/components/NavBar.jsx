@@ -1,35 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { auth, getUserProfile } from "../../services/firebase"; // adjust path
+import { auth, getUserProfile, getActiveMockUid } from "../../services/firebase"; // adjust path
 
 export default function NavBar() {
   const [profile, setProfile] = useState(null);
   const [uid, setUid] = useState(null);
 
-  const testUserUIDs = ["user1", "user2", "user3", "user4"];
-
-  function getRandomUID() {
-    const index = Math.floor(Math.random() * testUserUIDs.length);
-    return testUserUIDs[index];
-  }
-
   useEffect(() => {
+    let mounted = true;
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      let userId;
-      
-      if (user) {
-        userId = user.uid;
-      } else {
-        // pick a random user for testing
-        userId = getRandomUID();
+      try {
+        const userId = user?.uid ?? getActiveMockUid();
+        if (!mounted) return;
+        setUid(userId);
+        const data = await getUserProfile(userId);
+        if (mounted) setProfile(data);
+      } catch (err) {
+        console.error('NavBar: failed to load profile', err);
       }
-
-      setUid(userId);
-      const data = await getUserProfile(userId);
-      setProfile(data);
     });
 
-    return () => unsubscribe();
+    return () => {
+      mounted = false;
+      unsubscribe();
+    };
   }, []);
 
   // useEffect(() => {
