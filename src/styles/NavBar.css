@@ -9,10 +9,11 @@
     align-items: center;
     padding: 0 20px;
     margin: 0 auto;
-    overflow-x: hidden;
+    overflow: visible; /* allow dropdown to show below navbar */
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
     font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   }
+  
   
   /* left links */
   
@@ -71,17 +72,18 @@
   
   .navbar .profile-menu {
     position: absolute;
-    top: calc(100% + 6px);
+    top: 100%;        /* sit directly under the profile area */
     right: 0;
     background: #ffffff;
     border-radius: 10px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
     min-width: 170px;
     padding: 6px 0;
-    display: none;            /* hidden by default */
+    display: none;    /* hidden by default */
     flex-direction: column;
     z-index: 9999;
   }
+  
   
   /* show when hovering icon + name + arrow */
   .navbar .nav-profile:hover .profile-menu {

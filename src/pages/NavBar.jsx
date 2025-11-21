@@ -28,7 +28,7 @@ export default function NavBar() {
         <span className="profile-name">Jessica</span>
         <span className="profile-arrow">▾</span>
 
-        {/* dropdown box */}
+        {/* dropdown box (shown on hover via CSS) */}
         <div className="profile-menu">
           <Link to="/Profile" className="profile-menu-item">
             View Profile
