@@ -76,7 +76,7 @@ export default function NavBar() {
   //   return () => unsubscribe();
   // }, []);
 
-  // If the current URL is a profile page (e.g. /profile/u_jane), prefer that
+  // If the current URL is a profile page (e.g. /profile/user#), prefer that
   // UID when building the Dashboard link so navigation keeps context.
   const pathMatch = window.location.pathname.match(/^\/profile\/(.+)$/);
   const uidFromPath = pathMatch ? pathMatch[1] : null;

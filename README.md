@@ -24,7 +24,7 @@
 Refreshing the page will give you different seed profiles and data. 
 
 If you want to specifically see a profile you can do 
-- http://localhost:5173/profile/[USERID]
-- Replace [USERID] with u_jane, u_alex, u_sarah, u_michael
+- http://localhost:5173/profile/user#
+- Replace # with 1-4
 
 Firebase data can be found in src/services/firebase.js

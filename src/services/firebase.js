@@ -20,7 +20,7 @@ export const db = getFirestore(app);
 export const auth = getAuth(app);
 
 // Development helper: a list of mock user IDs used by seedAllMockData.
-const MOCK_USER_IDS = ["u_jane", "u_alex", "u_sarah", "u_michael"];
+const MOCK_USER_IDS = ["user1", "user2", "user3", "user4"];
 let _activeMockUid = null;
 
 // Returns a deterministic random mock uid for the current page session.
@@ -58,7 +58,7 @@ export async function seedAllMockData() {
   // create mock users
   const users = [
     {
-      id: "u_jane",
+      id: "user1",
       data: {
         profilePic:
           "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg",
@@ -76,7 +76,7 @@ export async function seedAllMockData() {
       }
     },
     {
-      id: "u_alex",
+      id: "user2",
       data: {
         profilePic:
           "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg",
@@ -94,7 +94,7 @@ export async function seedAllMockData() {
       }
     },
     {
-      id: "u_sarah",
+      id: "user3",
       data: {
         profilePic:
           "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg",
@@ -112,7 +112,7 @@ export async function seedAllMockData() {
       }
     },
     {
-      id: "u_michael",
+      id: "user4",
       data: {
         profilePic:
           "https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg",
@@ -133,11 +133,11 @@ export async function seedAllMockData() {
 
   // create mock loans
   const loans = [
-    // jane (u_jane) - mixed statuses
+    // user1 - mixed statuses
     {
       id: "L1001",
       data: {
-        userId: "u_jane",
+        userId: "user1",
         itemId: "BK-1001",
         title: "Mockingjay",
         author: "Suzanne Collins",
@@ -153,7 +153,7 @@ export async function seedAllMockData() {
     {
       id: "L1002",
       data: {
-        userId: "u_jane",
+        userId: "user1",
         itemId: "BK-2002",
         title: "The Maze Runner",
         author: "James Dashner",
@@ -168,7 +168,7 @@ export async function seedAllMockData() {
     {
       id: "L1003",
       data: {
-        userId: "u_jane",
+        userId: "user1",
         itemId: "BK-3003",
         title: "Divergent",
         author: "Veronica Roth",
@@ -183,7 +183,7 @@ export async function seedAllMockData() {
     {
       id: "L1004",
       data: {
-        userId: "u_jane",
+        userId: "user1",
         itemId: "BK-3004",
         title: "Twilight",
         author: "Stephenie Meyer",
@@ -196,11 +196,11 @@ export async function seedAllMockData() {
       }
     },
 
-    // alex (u_alex) - all borrowed
+    // user2 - all borrowed
     {
       id: "L2001",
       data: {
-        userId: "u_alex",
+        userId: "user2",
         itemId: "BK-4001",
         title: "Clean Code",
         author: "Robert C. Martin",
@@ -215,7 +215,7 @@ export async function seedAllMockData() {
     {
       id: "L2002",
       data: {
-        userId: "u_alex",
+        userId: "user2",
         itemId: "BK-4002",
         title: "The Pragmatic Programmer",
         author: "Andrew Hunt",
@@ -228,11 +228,11 @@ export async function seedAllMockData() {
       }
     },
 
-    // sarah (u_sarah) - all overdue w/ fines
+    // user3 - all overdue w/ fines
     {
       id: "L3001",
       data: {
-        userId: "u_sarah",
+        userId: "user3",
         itemId: "BK-5001",
         title: "The Silent Patient",
         author: "Alex Michaelides",
@@ -247,7 +247,7 @@ export async function seedAllMockData() {
     {
       id: "L3002",
       data: {
-        userId: "u_sarah",
+        userId: "user3",
         itemId: "BK-5002",
         title: "Gone Girl",
         author: "Gillian Flynn",
@@ -260,7 +260,7 @@ export async function seedAllMockData() {
       }
     }
 
-    // Michael (u_michael) — no loans 
+    // user4 — no loans 
     // (intentionally empty)
   ];
 
