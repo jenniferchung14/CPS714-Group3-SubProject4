@@ -9,11 +9,16 @@ const LibraryTable = () => {
   useEffect(() => {
     async function load() {
       try {
-        // Use the active mock UID chosen at app startup so different dev sessions
-        // can show different users.
-        const { getActiveMockUid } = await import("../../services/firebase");
-        const uid = getActiveMockUid();
-        const loans = await getUserLoans(uid);
+          // Use the uid from the URL query param if provided, otherwise fall
+          // back to the active mock uid chosen at app startup. This ensures
+          // the Dashboard shows the same user when navigated from a profile.
+          const params = new URLSearchParams(window.location.search);
+          let uid = params.get("uid");
+          if (!uid) {
+            const { getActiveMockUid } = await import("../../services/firebase");
+            uid = getActiveMockUid();
+          }
+          const loans = await getUserLoans(uid);
 
         const mapped = loans.map((loan, index) => {
           const today = new Date();
@@ -62,7 +67,11 @@ const LibraryTable = () => {
     }
 
     if (book.status === "OVERDUE" && book.fine > 0) {
-      return <button className="btn btn-fine">Pay Fine</button>;
+      return <button 
+        className="btn btn-fine"
+        onClick={() => alert("Pay all fines logic goes here")}
+        >
+      Pay Fine</button>;
     }
 
     if (book.status === "BORROWED" && !book.hasHold) {

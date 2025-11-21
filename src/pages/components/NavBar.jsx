@@ -1,12 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { auth, getUserProfile, getActiveMockUid } from "../../services/firebase"; // adjust path
 
 export default function NavBar() {
   const [profile, setProfile] = useState(null);
   const [uid, setUid] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
+    // Prefer a uid from the URL path (/profile/:uid) or query (?uid=)
+    // and load that profile. Only when neither is present do we subscribe
+    // to auth so the navbar shows the signed-in (or active mock) user.
+    const params = new URLSearchParams(location.search);
+    const uidFromQuery = params.get("uid");
+    const pathMatch = location.pathname.match(/^\/profile\/(.+)$/);
+    const uidFromPath = pathMatch ? decodeURIComponent(pathMatch[1]) : null;
+
+    const uidToLoad = uidFromPath || uidFromQuery;
+
+    if (uidToLoad) {
+      let mounted = true;
+      (async () => {
+        try {
+          const data = await getUserProfile(uidToLoad);
+          if (!mounted) return;
+          setUid(uidToLoad);
+          setProfile(data);
+        } catch (err) {
+          console.error('NavBar: failed to load profile from URL', err);
+        }
+      })();
+
+      return () => {
+        mounted = false;
+      };
+    }
+
+    // No uid in path or query — fall back to auth / active mock uid subscription.
     let mounted = true;
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       try {
@@ -24,7 +54,7 @@ export default function NavBar() {
       mounted = false;
       unsubscribe();
     };
-  }, []);
+  }, [location.pathname, location.search]);
 
   // useEffect(() => {
   //   const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -46,11 +76,18 @@ export default function NavBar() {
   //   return () => unsubscribe();
   // }, []);
 
+  // If the current URL is a profile page (e.g. /profile/u_jane), prefer that
+  // UID when building the Dashboard link so navigation keeps context.
+  const pathMatch = window.location.pathname.match(/^\/profile\/(.+)$/);
+  const uidFromPath = pathMatch ? pathMatch[1] : null;
+
+  const dashboardUid = uidFromPath || uid;
+
   if (!profile) {
     return (
       <nav className="navbar">
         <div className="nav-left">
-          <Link to="/" className="nav-item">Dashboard</Link>
+          <Link to={dashboardUid ? `/?uid=${dashboardUid}` : "/"} className="nav-item">Dashboard</Link>
           <Link to="/Catalog" className="nav-item">Catalog</Link>
           <Link to="/Reservation" className="nav-item">Reservation</Link>
         </div>
@@ -66,7 +103,7 @@ export default function NavBar() {
   return (
     <nav className="navbar">
       <div className="nav-left">
-        <Link to="/" className="nav-item">Dashboard</Link>
+        <Link to={dashboardUid ? `/?uid=${dashboardUid}` : "/"} className="nav-item">Dashboard</Link>
         <Link to="/Catalog" className="nav-item">Catalog</Link>
         <Link to="/Reservation" className="nav-item">Reservation</Link>
       </div>
