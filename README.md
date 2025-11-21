@@ -1,3 +1,5 @@
+# !!DO NOT EDIT OR ADD TO OUR CODEBASE IF YOU'RE ARE NOT A MEMBER OF OUR GROUP!!
+
 # Sub-Project 4 - User Personal Dashboard (Section 2)
 
 ## Getting Started
