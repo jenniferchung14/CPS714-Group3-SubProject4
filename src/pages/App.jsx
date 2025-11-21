@@ -7,11 +7,12 @@ import viteLogo from "/vite.svg";
 import Profile from "./Profile.jsx";
 import EditProfile from "./EditProfile.jsx";
 import LibraryTable from "./components/LibraryTable.jsx";
-import Navbar from './NavBar.jsx';
+import Navbar from './components/NavBar.jsx';
 
 import "../styles/App.css";
 import "../styles/Profile.css";
 import "../styles/EditProfile.css";
+import "../styles/components/NavBar.css";
 import "../styles/components/LibraryTable.css";
 
 function App() {
