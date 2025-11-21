@@ -69,7 +69,7 @@ const LibraryTable = () => {
     if (book.status === "OVERDUE" && book.fine > 0) {
       return <button 
         className="btn btn-fine"
-        onClick={() => alert("Pay all fines logic goes here")}
+        onClick={() => alert("Pay fines logic goes here")}
         >
       Pay Fine</button>;
     }
