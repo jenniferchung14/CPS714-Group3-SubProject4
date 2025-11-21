@@ -21,4 +21,8 @@
 ## Notes
 Refreshing the page will give you different seed profiles and data. 
 
+If you want to specifically see a profile you can do 
+- http://localhost:5173/profile/user#
+- Replace # with a number between 1 to 4
+
 Firebase data can be found in src/services/firebase.js
