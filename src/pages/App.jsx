@@ -19,7 +19,7 @@ function App() {
 
   return (
     <BrowserRouter>
-
+      <Navbar />
       <div>
         <Routes>
           <Route

@@ -1,33 +1,43 @@
-import { useState } from "react";
+import React from "react";
+import "../styles/NavBar.css";
+import { Link } from "react-router-dom";
 
-import '../styles/NavBar.css'
-
-export default function Navbar() {
-  const [open, setOpen] = useState(false);
-
+export default function NavBar() {
   return (
-    <>
-      <nav className="nav">
-        <div className="logo">MySite</div>
-
-        {/* Hamburger Icon */}
-        <div className="hamburger" onClick={() => setOpen(!open)}>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </nav>
-
-      {/* Slide-in Menu */}
-      <div className={`menu ${open ? "open" : ""}`}>
-        <a href="#">Catalog</a>
-        <a href="#">Library</a>
-        <a href="#">Profile</a>
-        <a href="#">Contact</a>
+    <nav className="navbar">
+      <div className="nav-left">
+        <Link to="/" className="nav-item">
+          Dashboard
+        </Link>
+        <Link to="/Catalog" className="nav-item">
+          Catalog
+        </Link>
+        <Link to="/Reservation" className="nav-item">
+          Reservation
+        </Link>
       </div>
 
-      {/* Background dim when menu is open */}
-      {open && <div className="overlay" onClick={() => setOpen(false)} />}
-    </>
+      {/* profile area */}
+      <div className="nav-profile">
+        <img
+          src="https://via.placeholder.com/32"
+          alt="Profile"
+          className="profile-icon"
+        />
+
+        <span className="profile-name">Jessica</span>
+        <span className="profile-arrow">▾</span>
+
+        {/* dropdown box */}
+        <div className="profile-menu">
+          <Link to="/Profile" className="profile-menu-item">
+            View Profile
+          </Link>
+          <Link to="/EditProfile" className="profile-menu-item">
+            Edit Profile
+          </Link>
+        </div>
+      </div>
+    </nav>
   );
 }
