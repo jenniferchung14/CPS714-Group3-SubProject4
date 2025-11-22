@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { auth, getUserProfile, getActiveMockUid } from "../../services/firebase"; // adjust path
+import { auth, getUserProfile, getActiveMockUid } from "../services/firebase"; // adjust path
 
 export default function NavBar() {
   const [profile, setProfile] = useState(null);

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getUserLoans } from "../../services/firebase";
+import { getUserLoans } from "../services/firebase";
 
 const LibraryTable = () => {
   const [books, setBooks] = useState([]);
@@ -15,7 +15,7 @@ const LibraryTable = () => {
           const params = new URLSearchParams(window.location.search);
           let uid = params.get("uid");
           if (!uid) {
-            const { getActiveMockUid } = await import("../../services/firebase");
+            const { getActiveMockUid } = await import("../services/firebase");
             uid = getActiveMockUid();
           }
           const loans = await getUserLoans(uid);
