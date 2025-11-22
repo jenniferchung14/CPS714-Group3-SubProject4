@@ -48,7 +48,32 @@ export async function updateUserProfile(uid, updatedData) {
 export async function getUserLoans(uid) {
   const q = query(collection(db, "loans"), where("userId", "==", uid));
   const snap = await getDocs(q);
-  return snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+  return snap.docs.map((d) => {
+    const data = d.data();
+    const rawDue = data?.dueDate;
+
+    if (rawDue) {
+      // Case 1: Firestore Timestamp (has .toDate())
+      if (typeof rawDue.toDate === "function") {
+        const dt = rawDue.toDate();
+        data.dueDate = dt.toISOString().slice(0, 10); // "2025-12-13"
+      }
+      // Case 2: JS Date object
+      else if (rawDue instanceof Date) {
+        data.dueDate = rawDue.toISOString().slice(0, 10);
+      }
+      // Case 3: string ("2025-12-13" or "-") → leave as is
+      else if (typeof rawDue === "string") {
+        // do nothing
+      }
+    } else {
+      // No due date at all (e.g. returned items)
+      data.dueDate = "-";
+    }
+
+    return { id: d.id, ...data };
+  });
 }
 
 // Seed mock data for testing (and so other sub-teams can see data from Firestore)
@@ -147,7 +172,8 @@ export async function seedAllMockData() {
         dueDate: "2025-12-01",
         status: "BORROWED",
         hasHold: false,
-        fines: 0
+        fines: 0,
+        createdAt: new Date()
       }
     },
     {
@@ -162,7 +188,8 @@ export async function seedAllMockData() {
         dueDate: "2025-10-01",
         status: "OVERDUE",
         hasHold: false,
-        fines: 7.5
+        fines: 7.5,
+        createdAt: new Date()
       }
     },
     {
@@ -177,7 +204,8 @@ export async function seedAllMockData() {
         dueDate: "-",
         status: "RETURNED",
         hasHold: false,
-        fines: 0
+        fines: 0,
+        createdAt: new Date()
       }
     },
     {
@@ -192,7 +220,8 @@ export async function seedAllMockData() {
         dueDate: "2025-11-02",
         status: "BORROWED",
         hasHold: true,
-        fines: 0
+        fines: 0,
+        createdAt: new Date()
       }
     },
 
@@ -209,7 +238,8 @@ export async function seedAllMockData() {
         dueDate: "2025-12-15",
         status: "BORROWED",
         hasHold: false,
-        fines: 0
+        fines: 0,
+        createdAt: new Date()
       }
     },
     {
@@ -224,7 +254,8 @@ export async function seedAllMockData() {
         dueDate: "2025-11-22",
         status: "BORROWED",
         hasHold: false,
-        fines: 0
+        fines: 0,
+        createdAt: new Date()
       }
     },
 
@@ -241,7 +272,8 @@ export async function seedAllMockData() {
         dueDate: "2025-06-01",
         status: "OVERDUE",
         hasHold: false,
-        fines: 12.0
+        fines: 12.0,
+        createdAt: new Date()
       }
     },
     {
@@ -256,7 +288,8 @@ export async function seedAllMockData() {
         dueDate: "2025-05-20",
         status: "OVERDUE",
         hasHold: false,
-        fines: 19.25
+        fines: 19.25,
+        createdAt: new Date()
       }
     }
 
