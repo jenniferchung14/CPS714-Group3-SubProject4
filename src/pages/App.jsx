@@ -6,9 +6,9 @@ import viteLogo from "/vite.svg";
 
 import Profile from "./Profile.jsx";
 import EditProfile from "./EditProfile.jsx";
-import LibraryTable from "./components/LibraryTable.jsx";
+import LibraryTable from "../components/LibraryTable.jsx";
 import { getActiveMockUid } from "../services/firebase.js";
-import Navbar from "./components/NavBar.jsx";
+import Navbar from "../components/NavBar.jsx";
 
 import "../styles/App.css";
 import "../styles/Profile.css";
