@@ -72,8 +72,7 @@ export async function seedAllMockData() {
         aptNumber: "",
         postal: "A1B 2C3",
         city: "Aurora",
-        province: "ON",
-        memberNumber: "1"
+        province: "ON"
       }
     },
     {
@@ -91,8 +90,7 @@ export async function seedAllMockData() {
         aptNumber: "502",
         postal: "M5B 1X2",
         city: "Toronto",
-        province: "ON",
-        memberNumber: "2"
+        province: "ON"
       }
     },
     {
@@ -110,8 +108,7 @@ export async function seedAllMockData() {
         aptNumber: "1603",
         postal: "M4C 2A1",
         city: "Markham",
-        province: "ON",
-        memberNumber: "3"
+        province: "ON"
       }
     },
     {
@@ -129,8 +126,7 @@ export async function seedAllMockData() {
         aptNumber: "",
         postal: "L4P 5V2",
         city: "Newmarket",
-        province: "ON",
-        memberNumber: "4"
+        province: "ON"
       }
     }
   ];
