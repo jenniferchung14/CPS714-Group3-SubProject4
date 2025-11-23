@@ -76,6 +76,19 @@ export async function getUserLoans(uid) {
   });
 }
 
+// Updating due date of book.id which has been renewed by uid
+export async function renewUserLoan(loanId, newDueDate, newRenewCount) {
+  const loanRef = doc(db, "loans", loanId);
+
+  await updateDoc(loanRef, {
+    dueDate: newDueDate,
+    renewCount: newRenewCount,
+    status: "BORROWED" // optional but consistent
+  });
+
+  console.log(`Loan ${loanId} renewed`);
+}
+
 // Seed mock data for testing (and so other sub-teams can see data from Firestore)
 export async function seedAllMockData() {
   console.log("Starting mock data seeding...");
@@ -173,7 +186,8 @@ export async function seedAllMockData() {
         status: "BORROWED",
         hasHold: false,
         fines: 0,
-        createdAt: new Date()
+        createdAt: new Date(), 
+        renewCount: 0,
       }
     },
     {
@@ -189,7 +203,8 @@ export async function seedAllMockData() {
         status: "OVERDUE",
         hasHold: false,
         fines: 7.5,
-        createdAt: new Date()
+        createdAt: new Date(), 
+        renewCount: 0,
       }
     },
     {
@@ -205,7 +220,8 @@ export async function seedAllMockData() {
         status: "RETURNED",
         hasHold: false,
         fines: 0,
-        createdAt: new Date()
+        createdAt: new Date(), 
+        renewCount: 0,
       }
     },
     {
@@ -221,7 +237,8 @@ export async function seedAllMockData() {
         status: "BORROWED",
         hasHold: true,
         fines: 0,
-        createdAt: new Date()
+        createdAt: new Date(), 
+        renewCount: 0,
       }
     },
 
@@ -239,7 +256,8 @@ export async function seedAllMockData() {
         status: "BORROWED",
         hasHold: false,
         fines: 0,
-        createdAt: new Date()
+        createdAt: new Date(), 
+        renewCount: 2,
       }
     },
     {
@@ -255,7 +273,8 @@ export async function seedAllMockData() {
         status: "BORROWED",
         hasHold: false,
         fines: 0,
-        createdAt: new Date()
+        createdAt: new Date(), 
+        renewCount: 0,
       }
     },
 
@@ -273,7 +292,8 @@ export async function seedAllMockData() {
         status: "OVERDUE",
         hasHold: false,
         fines: 12.0,
-        createdAt: new Date()
+        createdAt: new Date(),
+        renewCount: 0,
       }
     },
     {
@@ -289,7 +309,8 @@ export async function seedAllMockData() {
         status: "OVERDUE",
         hasHold: false,
         fines: 19.25,
-        createdAt: new Date()
+        createdAt: new Date(),
+        renewCount: 0,
       }
     }
 

@@ -1,24 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { getUserLoans } from "../services/firebase";
+import { getUserLoans, renewUserLoan } from "../services/firebase";
+
+function addDaysToDateString(dateStr, daysToAdd) {
+  const [year, month, day] = dateStr.split("-").map(Number);
+  const d = new Date(year, month - 1, day);
+  d.setDate(d.getDate() + daysToAdd);
+
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
 
 const LibraryTable = () => {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [uid, setUid] = useState(null);
 
   // Load books from Firestore
   useEffect(() => {
     async function load() {
       try {
-          // Use the uid from the URL query param if provided, otherwise fall
-          // back to the active mock uid chosen at app startup. This ensures
-          // the Dashboard shows the same user when navigated from a profile.
-          const params = new URLSearchParams(window.location.search);
-          let uid = params.get("uid");
-          if (!uid) {
-            const { getActiveMockUid } = await import("../services/firebase");
-            uid = getActiveMockUid();
-          }
-          const loans = await getUserLoans(uid);
+        // Use the uid from the URL query param if provided, otherwise fall
+        // back to the active mock uid chosen at app startup. This ensures
+        // the Dashboard shows the same user when navigated from a profile.
+        const params = new URLSearchParams(window.location.search);
+        let uid = params.get("uid");
+        if (!uid) {
+          const { getActiveMockUid } = await import("../services/firebase");
+          uid = getActiveMockUid();
+        }
+        setUid(uid);
+        const loans = await getUserLoans(uid);
 
         const mapped = loans.map((loan, index) => {
           const today = new Date();
@@ -43,6 +56,7 @@ const LibraryTable = () => {
             fine: Number(loan.fines || 0),
             status,
             hasHold: Boolean(loan.hasHold),
+            renewCount: Number(loan.renewCount || 0),
           };
         });
 
@@ -57,6 +71,49 @@ const LibraryTable = () => {
     load();
   }, []);
 
+  const handleRenew = async (bookId) => {
+    const current = books.find((b) => b.id === bookId);
+    if (!current) return;
+
+    const renewCount = current.renewCount ?? 0;
+
+    // cannot renew if:
+    // - already returned
+    // - has a hold
+    // - has outstanding fine
+    // - already renewed twice
+    if (
+      current.status === "RETURNED" ||
+      current.hasHold ||
+      current.fine > 0 || // don't think this case would ever appear since pay fine is there but just in case...
+      renewCount >= 2
+    ) {
+      return;
+    }
+
+    const newDueDate = addDaysToDateString(current.dueDate, 14);
+    const newRenewCount = renewCount + 1;
+
+    setBooks((prev) =>
+      prev.map((book) =>
+        book.id === bookId
+          ? {
+              ...book,
+              dueDate: newDueDate,
+              renewCount: newRenewCount,
+              // status: "BORROWED",
+            }
+          : book
+      )
+    );
+
+    try {
+      await renewUserLoan(bookId, newDueDate, newRenewCount);
+    } catch (e) {
+      console.error("Renew failed: ", e);
+    }
+  };
+
   const actionButton = (book) => {
     if (book.status === "RETURNED") {
       return (
@@ -67,26 +124,48 @@ const LibraryTable = () => {
     }
 
     if (book.status === "OVERDUE" && book.fine > 0) {
-      return <button 
-        className="btn btn-fine"
-        onClick={() => alert("Pay fines logic goes here")}
+      return (
+        <button
+          className="btn btn-fine"
+          onClick={() => alert("Pay fines logic goes here")}
         >
-      Pay Fine</button>;
+          Pay Fine
+        </button>
+      );
     }
 
-    if (book.status === "BORROWED" && !book.hasHold) {
-      return <button className="btn btn-renew">Renew</button>;
+    const renewCount = book.renewCount ?? 0;
+    if (
+      book.status === "BORROWED" &&
+      !book.hasHold &&
+      book.fine === 0 &&
+      renewCount < 2
+    ) {
+      return (
+        <button className="btn btn-renew" onClick={() => handleRenew(book.id)}>
+          Renew
+        </button>
+      );
     }
 
-    if (book.status === "BORROWED" && book.hasHold) {
+    if (book.status === "BORROWED") {
       const ttId = `tt-${book.id}`;
+      let reason = "";
+      if (book.hasHold) {
+        reason = "there is a hold on this book";
+      } else if (book.renewCount >= 2) {
+        reason = "renewal limit of 2 reached";
+      } else if (book.fine > 0) {
+        reason = "outstanding fine must be paid first";
+      }
+
       return (
         <span className="tooltip-wrapper" tabIndex={0} aria-describedby={ttId}>
           <button className="btn btn-disabled" disabled aria-hidden="true">
             Renew
           </button>
           <span className="tooltip-text" role="tooltip" id={ttId}>
-            Cannot renew — there is a hold on this book
+            Cannot renew — {reason}
           </span>
         </span>
       );
