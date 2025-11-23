@@ -1,23 +1,17 @@
-// src/__tests__/Firebase.test.jsx
 import { describe, test, expect, vi, beforeEach } from "vitest";
 
-// --- Mock firebase SDK modules --- //
-
-// firebase/app
 vi.mock("firebase/app", () => ({
   initializeApp: vi.fn(() => ({})),
 }));
 
-// firebase/auth
 vi.mock("firebase/auth", () => ({
   getAuth: vi.fn(() => ({})),
 }));
 
-// firebase/firestore
 vi.mock("firebase/firestore", () => {
   const getFirestore = vi.fn(() => ({}));
   const collection = vi.fn();
-  const doc = vi.fn(() => ({ _fakeRef: true })); // return fake ref object
+  const doc = vi.fn(() => ({ _fakeRef: true }));
   const getDoc = vi.fn();
   const getDocs = vi.fn();
   const setDoc = vi.fn();
@@ -39,7 +33,6 @@ vi.mock("firebase/firestore", () => {
   };
 });
 
-// Now import the functions we want to test
 import {
   getUserProfile,
   updateUserProfile,
@@ -48,7 +41,6 @@ import {
   seedAllMockData,
 } from "../services/firebase";
 
-// And import the mocked firestore functions so we can control & assert them
 import {
   getDoc,
   getDocs,
@@ -99,16 +91,13 @@ describe("firebase.js service functions", () => {
   });
 
   test("updateUserProfile calls updateDoc with correct parameters", async () => {
-    // doc() already returns { _fakeRef: true } from our mock factory
     updateDoc.mockResolvedValueOnce(undefined);
 
     const updatedData = { city: "Waterloo", phone: "111-222-3333" };
     await updateUserProfile("user2", updatedData);
 
-    // check that doc() was called correctly
     expect(doc).toHaveBeenCalledWith(expect.anything(), "users", "user2");
 
-    // check updateDoc called with the ref returned by doc() and the update data
     expect(updateDoc).toHaveBeenCalledWith(
       { _fakeRef: true },
       updatedData
@@ -190,10 +179,10 @@ describe("firebase.js service functions", () => {
   });
 
   test("getActiveMockUid returns a consistent mock user ID and only calls Math.random once", () => {
-    const spyRandom = vi.spyOn(Math, "random").mockReturnValue(0.25); // 0.25 → index 1 → user2
+    const spyRandom = vi.spyOn(Math, "random").mockReturnValue(0.25);
 
     const uid1 = getActiveMockUid();
-    const uid2 = getActiveMockUid(); // should reuse cached value
+    const uid2 = getActiveMockUid();
 
     expect(uid1).toBe(uid2);
     expect(["user1", "user2", "user3", "user4"]).toContain(uid1);
@@ -203,30 +192,23 @@ describe("firebase.js service functions", () => {
   });
 
   test("seedAllMockData writes all users and loans via setDoc", async () => {
-    // Clear any calls triggered by module import / initial seeding
     setDoc.mockClear();
 
     await seedAllMockData();
 
-    // 4 users + 8 loans = 12 setDoc calls
     expect(setDoc).toHaveBeenCalledTimes(12);
 
-    // Basic sanity: first few calls go to the right collections
-    // We know firebase.js calls: setDoc(doc(db,"users","user1"), {...})
-    // and setDoc(doc(db,"loans","L1001"), {...}) etc.
     expect(doc).toHaveBeenCalledWith(expect.anything(), "users", "user1");
     expect(doc).toHaveBeenCalledWith(expect.anything(), "loans", "L1001");
 
     const firstCallArgs = setDoc.mock.calls[0];
     const loanCallArgs = setDoc.mock.calls[4];
 
-    // first user data
     expect(firstCallArgs[1]).toMatchObject({
       firstName: "Jane",
       lastName: "Doe",
     });
 
-    // first loan data
     expect(loanCallArgs[1]).toMatchObject({
       title: "Mockingjay",
       userId: "user1",
