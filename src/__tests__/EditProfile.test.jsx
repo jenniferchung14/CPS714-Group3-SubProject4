@@ -4,11 +4,9 @@ import EditProfile from "../pages/EditProfile";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 vi.mock("../services/firebase");
+import { getUserProfile, updateUserProfile } from "../services/firebase";
 
-import {
-  getUserProfile,
-  updateUserProfile,
-} from "../services/firebase";
+globalThis.alert = vi.fn();
 
 describe("EditProfile Component", () => {
   const mockProfile = {
