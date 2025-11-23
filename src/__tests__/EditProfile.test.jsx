@@ -3,12 +3,12 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import EditProfile from "../pages/EditProfile";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 
+// Mock Firebase functions
 vi.mock("../services/firebase");
+import { getUserProfile, updateUserProfile } from "../services/firebase";
 
-import {
-  getUserProfile,
-  updateUserProfile,
-} from "../services/firebase";
+// 🔥 MOCK alert() so tests don't crash
+globalThis.alert = vi.fn();
 
 describe("EditProfile Component", () => {
   const mockProfile = {
@@ -76,6 +76,11 @@ describe("EditProfile Component", () => {
         "123",
         expect.any(Object)
       );
+    });
+
+    // Optional: Check that alert was called
+    await waitFor(() => {
+      expect(alert).toHaveBeenCalledWith("Profile updated!");
     });
   });
 
